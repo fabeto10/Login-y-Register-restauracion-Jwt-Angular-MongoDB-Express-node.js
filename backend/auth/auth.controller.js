@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
 
-exports.createUser = (req, res, next) => {
+module.exports.createUser = (req, res, next) => {
+    console.log(req, res, 'estas son las Respuestas de create User');
     const newUser = {
         name: req.body.name,
         email: req.body.email,
@@ -29,7 +30,8 @@ exports.createUser = (req, res, next) => {
     })
 }
 
-exports.loginUser = (req, res, next) => {
+module.exports.loginUser = (req, res, next) => {
+    console.log(req, res, 'estas son las Respuestas de login User')
     const userData = {
         email: req.body.email,
         password: req.body.password
@@ -57,4 +59,7 @@ exports.loginUser = (req, res, next) => {
             }
         }
     })
+}
+module.exports.logout = (req, res, next) => {
+    res.status(200).json("Logged out")
 }
