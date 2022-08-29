@@ -14,7 +14,6 @@ export class GraficaComponent implements OnInit {
   graph: any = new Graph();
   constructor() {}
   graficarUsuario(usuario: any, x: number, y: number) {
-    console.log(usuario);
     this.graph.addNode(usuario.id, {
       x,
       y,
@@ -23,8 +22,9 @@ export class GraficaComponent implements OnInit {
       color: '#03fa45',
     });
     let yAux = y - 1;
+    this.graph.setNodeAttribute(usuario.id, 'data', usuario);
     usuario.hijos.forEach((hijo: any, index: number) => {
-      let xAux = index%2? x -1:x+1;
+      let xAux = index % 2 ? x - 1 : x + 1;
       this.graficarUsuario(hijo, xAux, yAux);
       this.graph.addEdge(usuario.id, hijo.id);
     });
@@ -112,7 +112,6 @@ export class GraficaComponent implements OnInit {
 
     // Create the sigma
     const renderer: any = new Sigma(this.graph, container);
-    console.log(renderer);
     //
     // Drag'n'drop feature
     // ~~~~~~~~~~~~~~~~~~~
@@ -120,7 +119,7 @@ export class GraficaComponent implements OnInit {
 
     // State for drag'n'drop
     let draggedNode: string | null = null;
-    let isDragging = false;
+    let isDragging = true;
 
     // On mouse down on a node
     //  - we enable the drag mode
