@@ -54,31 +54,31 @@ export class GraficaComponent implements OnInit {
   }]
   console.log(usuarios)
   const graph = new Graph();
-  // const auxId = usuarios.forEach(function(element: any, index: number){
-  //   // console.log(element.id);
-  //   // let auxNew = element.id.sort()
-  //   // console.log(auxNew)
-  //   return graph.addNode(`${element.id}`, { x: -3, y: 2, size: 10, label: `${element.nombre}`,  color: `${element.color}` })
-  // })
-  // const auxEach = relaciones.forEach(function(element){
-  //   console.log(element.origen, element.destino)
-  //   return graph.addEdge(`${element.origen}`, `${element.destino}`, { size: 10} );
-  // })
+  const auxId = usuarios.forEach(function(element: any, index: number){
+    // console.log(element.id);
+    // let auxNew = element.id.sort()
+    // console.log(auxNew);
+    return graph.addNode(`${element.id}`, { x: --index, y: --index, size: 10, label: `${element.nombre}`,  color: `${element.color}` });
+  })
+  const auxEach = relaciones.forEach(function(element){
+    console.log(element.origen, element.destino)
+    return graph.addEdge(`${element.origen}`, `${element.destino}`, { size: 10} );
+  })
   
-  // auxId;
-  // console.log(auxId);
-  // auxEach;
-  // console.log(auxEach);
+  auxId;
+  console.log(auxId);
+  auxEach;
+  console.log(auxEach);
   // Create a sample graph
   
-  graph.addNode(1, { x: 0, y:-18, label: "uno", size: 10, color: "#03fa45" });
-  graph.addNode("n2", { x: 1, y: -1, label: "dos", size: 10, color: "#03fa45" });
-  graph.addNode("n3", { x: -1, y: -200, label: "tres", size: 10, color: "#03fa45" });
-  graph.addNode("n4", { x: -1, y: 0, label: "cuatro", size: 10, color: "#03fa45" });
-  graph.addNode("n5", { x: 0, y: 0, label: "cinco", size: 10, color: "#03fa45" });
+  // graph.addNode(1, { x: 20, y:100, label: "uno", size: 10, color: "#03fa45" });
+  // graph.addNode("n2", { x: 1, y: -1, label: "dos", size: 10, color: "#03fa45" });
+  // graph.addNode("n3", { x: -1, y: -0, label: "tres", size: 10, color: "#03fa45" });
+  // graph.addNode("n4", { x: -1, y: 0, label: "cuatro", size: 10, color: "#03fa45" });
+  // graph.addNode("n5", { x: 0, y: 0, label: "cinco", size: 10, color: "#03fa45" });
   // graph.addEdge(1, "n2");
   // graph.addEdge("n2", "n4");
-  // graph.addEdge(1 , "n3");
+  // // graph.addEdge(1 , "n3");
   // graph.addEdge("n2", "n5");
   
 /*  graph.nodes().forEach((node, i) => {
@@ -87,8 +87,8 @@ export class GraficaComponent implements OnInit {
     graph.setNodeAttribute(node, "y", 100 * Math.sin(angle));
   });*/
   // Create the spring layout and start it
-  const layout = new ForceSupervisor(graph, { isNodeFixed: (_, attr: any) => attr.highlighted });
-  layout.start();
+  // const layout = new ForceSupervisor(graph, { isNodeFixed: (_, attr: any) => attr.highlighted });
+  // layout.start();
   
   // Create the sigma
   const renderer:any = new Sigma(graph, container);
@@ -114,20 +114,20 @@ export class GraficaComponent implements OnInit {
   // });
   
   // // On mouse move, if the drag mode is enabled, we change the position of the draggedNode
-  // renderer.getMouseCaptor().on("mousemovebody", (e:any) => {
-  //   if (!isDragging || !draggedNode) return;
+  renderer.getMouseCaptor().on("mousemovebody", (e:any) => {
+    if (!isDragging || !draggedNode) return;
   
-  //   // Get new position of node
-  //   const pos = renderer.viewportToGraph(e);
+    // Get new position of node
+    const pos = renderer.viewportToGraph(e);
   
-  //   graph.setNodeAttribute(draggedNode, "x", pos.x);
-  //   graph.setNodeAttribute(draggedNode, "y", pos.y);
+    graph.setNodeAttribute(draggedNode, "x", pos.x);
+    graph.setNodeAttribute(draggedNode, "y", pos.y);
   
-  //   // Prevent sigma to move camera:
-  //   e.preventSigmaDefault();
-  //   e.original.preventDefault();
-  //   e.original.stopPropagation();
-  // });
+    // Prevent sigma to move camera:
+    e.preventSigmaDefault();
+    e.original.preventDefault();
+    e.original.stopPropagation();
+  });
   
   // On mouse up, we reset the autoscale and the dragging mode
   renderer.getMouseCaptor().on("mouseup", () => {
@@ -147,7 +147,9 @@ export class GraficaComponent implements OnInit {
   // Create node (and edge) by click
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //
-  
+  renderer.on("clickNode", ({event}: {event:{x:number; y:number}})=>{
+    console.log("click", event)
+  });
   // When clicking on the stage, we add a new node and connect it to the closest node
   renderer.on("clickStage", ({ event }: { event: { x: number; y: number } }) => {
     console.log(event)
