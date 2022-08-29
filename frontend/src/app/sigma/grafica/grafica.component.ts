@@ -104,109 +104,105 @@ export class GraficaComponent implements OnInit {
     graph.setNodeAttribute(node, "x", 50 * Math.cos(angle));
     graph.setNodeAttribute(node, "y", 100 * Math.sin(angle));
   });*/
-    // Create the spring layout and start it
-    /*     const layout: any = new ForceSupervisor(this.graph, {
-      isNodeFixed: (_, attr: any) => attr.highlighted,
-    });
-    layout.start(); */
-
-    // Create the sigma
-    const renderer: any = new Sigma(this.graph, container);
-    //
-    // Drag'n'drop feature
-    // ~~~~~~~~~~~~~~~~~~~
-    //
-
-    // State for drag'n'drop
-    let draggedNode: string | null = null;
-    let isDragging = true;
-
-    // On mouse down on a node
-    //  - we enable the drag mode
-    //  - save in the dragged node in the state
-    //  - highlight the node
-    //  - disable the camera so its state is not updated
-    // renderer.on("downNode", (e: any) => {
-    //   isDragging = true;
-    //   draggedNode = e.node;
-    //   graph.setNodeAttribute(draggedNode, "highlighted", true);
-    // });
-
-    // // On mouse move, if the drag mode is enabled, we change the position of the draggedNode
-    // renderer.getMouseCaptor().on("mousemovebody", (e:any) => {
-    //   if (!isDragging || !draggedNode) return;
-
-    //   // Get new position of node
-    //   const pos = renderer.viewportToGraph(e);
-
-    //   graph.setNodeAttribute(draggedNode, "x", pos.x);
-    //   graph.setNodeAttribute(draggedNode, "y", pos.y);
-
-    //   // Prevent sigma to move camera:
-    //   e.preventSigmaDefault();
-    //   e.original.preventDefault();
-    //   e.original.stopPropagation();
-    // });
-
-    // On mouse up, we reset the autoscale and the dragging mode
-    renderer.getMouseCaptor().on('mouseup', () => {
-      if (draggedNode) {
-        this.graph.removeNodeAttribute(draggedNode, 'highlighted');
-      }
-      isDragging = false;
-      draggedNode = null;
-    });
-
-    // Disable the autoscale at the first down interaction
-    // renderer.getMouseCaptor().on("mousedown", () => {
-    //   if (!renderer.getCustomBBox()) renderer.setCustomBBox(renderer.getBBox());
-    // });
-
-    //
-    // Create node (and edge) by click
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //
-
-    // When clicking on the stage, we add a new node and connect it to the closest node
-    renderer.on(
-      'clickStage',
-      ({ event }: { event: { x: number; y: number } }) => {
-        console.log(event);
-        // Sigma (ie. graph) and screen (viewport) coordinates are not the same.
-        // So we need to translate the screen x & y coordinates to the graph one by calling the sigma helper `viewportToGraph`
-        const coordForGraph = renderer.viewportToGraph({
-          x: event.x,
-          y: event.y,
-        });
-
-        // We create a new node
-        const node = {
-          ...coordForGraph,
-          size: 10,
-          color: '#abbaba',
-        };
-
-        // Searching the two closest nodes to auto-create an edge to it
-        // const closestNodes = graph
-        //   .nodes()
-        //   .map((nodeId) => {
-        //     const attrs:any = graph.getNodeAttributes(nodeId);
-        //     const distance = Math.pow(node.x - attrs.x, 2) + Math.pow(node.y - attrs.y, 2);
-        //     return { nodeId, distance };
-        //   })
-        //   .sort((a, b) => a.distance - b.distance)
-        //   .slice(0, 2);
-
-        // // We register the new node into graphology instance
-        // const id = Date.now();
-        // graph.addNode(id, node);
-
-        // // We create the edges
-        // closestNodes.forEach((e) => graph.addEdge(id, e.nodeId));
-      }
-    );
-  }
+  // Create the spring layout and start it
+  // const layout = new ForceSupervisor(graph, { isNodeFixed: (_, attr: any) => attr.highlighted });
+  // layout.start();
+  
+  // Create the sigma
+  const renderer:any = new Sigma(this.graph, container);
+  console.log(renderer)
+  //
+  // Drag'n'drop feature
+  // ~~~~~~~~~~~~~~~~~~~
+  //
+  
+  // State for drag'n'drop
+  let draggedNode: string | null = null;
+  let isDragging = false;
+  
+  // On mouse down on a node
+  //  - we enable the drag mode
+  //  - save in the dragged node in the state
+  //  - highlight the node
+  //  - disable the camera so its state is not updated
+  // renderer.on("downNode", (e: any) => {
+  //   isDragging = true;
+  //   draggedNode = e.node;
+  //   graph.setNodeAttribute(draggedNode, "highlighted", true);
+  // });
+  
+  // // On mouse move, if the drag mode is enabled, we change the position of the draggedNode
+  renderer.getMouseCaptor().on("mousemovebody", (e:any) => {
+    if (!isDragging || !draggedNode) return;
+  
+    // Get new position of node
+    const pos = renderer.viewportToGraph(e);
+  
+    this.graph.setNodeAttribute(draggedNode, "x", pos.x);
+    this.graph.setNodeAttribute(draggedNode, "y", pos.y);
+  
+    // Prevent sigma to move camera:
+    e.preventSigmaDefault();
+    e.original.preventDefault();
+    e.original.stopPropagation();
+  });
+  
+  // On mouse up, we reset the autoscale and the dragging mode
+  renderer.getMouseCaptor().on("mouseup", () => {
+    if (draggedNode) {
+      this.graph.removeNodeAttribute(draggedNode, "highlighted");
+    }
+    isDragging = false;
+    draggedNode = null;
+  });
+  
+  // Disable the autoscale at the first down interaction
+  // renderer.getMouseCaptor().on("mousedown", () => {
+  //   if (!renderer.getCustomBBox()) renderer.setCustomBBox(renderer.getBBox());
+  // });
+  
+  //
+  // Create node (and edge) by click
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //
+  renderer.on("clickNode", ({event}: {event:{x:number; y:number}})=>{
+    console.log("click", event)
+  });
+  // When clicking on the stage, we add a new node and connect it to the closest node
+  renderer.on("clickStage", ({ event }: { event: { x: number; y: number } }) => {
+    console.log(event)
+    // Sigma (ie. graph) and screen (viewport) coordinates are not the same.
+    // So we need to translate the screen x & y coordinates to the graph one by calling the sigma helper `viewportToGraph`
+    const coordForGraph = renderer.viewportToGraph({ x: event.x, y: event.y });
+  
+    // We create a new node
+    const node = {
+      ...coordForGraph,
+      size: 10,
+      color: "#abbaba",
+    };
+  
+    // Searching the two closest nodes to auto-create an edge to it
+    // const closestNodes = graph
+    //   .nodes()
+    //   .map((nodeId) => {
+    //     const attrs:any = graph.getNodeAttributes(nodeId);
+    //     const distance = Math.pow(node.x - attrs.x, 2) + Math.pow(node.y - attrs.y, 2);
+    //     return { nodeId, distance };
+    //   })
+    //   .sort((a, b) => a.distance - b.distance)
+    //   .slice(0, 2);
+  
+    // // We register the new node into graphology instance
+    // const id = Date.now();
+    // graph.addNode(id, node);
+  
+    // // We create the edges
+    // closestNodes.forEach((e) => graph.addEdge(id, e.nodeId));
+  });
 }
+  }
+
 function size(origen: number, destino: number, size: any, arg3: number): void {
   throw new Error('Function not implemented.');
 }
