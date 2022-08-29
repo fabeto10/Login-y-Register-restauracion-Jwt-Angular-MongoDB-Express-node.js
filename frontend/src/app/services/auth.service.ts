@@ -7,13 +7,13 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class AuthService {
-  AUTH_SERVER: string = 'http://localhost:3000';
+  AUTH_SERVER: string = 'http://127.0.0.1:3000';
   authSubject = new BehaviorSubject(false);
   private token?: string;
   constructor(private httpClinet: HttpClient) { }
 
   register(user: UserI): Observable<JwtResponseI>{
-    return this.httpClinet.post<JwtResponseI>(`${this.AUTH_SERVER}/register`,
+    return this.httpClinet.post<JwtResponseI>(`${this.AUTH_SERVER}/auth/register`,
     user).pipe(tap(
       (res: JwtResponseI)=>{
         if(res){
@@ -24,7 +24,7 @@ export class AuthService {
     ));
   }
   login(user: UserI): Observable<JwtResponseI>{
-    return this.httpClinet.post<JwtResponseI>(`${this.AUTH_SERVER}/login`,
+    return this.httpClinet.post<JwtResponseI>(`${this.AUTH_SERVER}/auth/login`,
     user).pipe(tap(
       (res: JwtResponseI)=>{
         if(res){

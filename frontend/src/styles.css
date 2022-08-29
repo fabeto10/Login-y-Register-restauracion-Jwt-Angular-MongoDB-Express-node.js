@@ -25,6 +25,7 @@ body {
   background: #456;
   font-family: 'Open Sans', sans-serif;
 }
+/* You can add global styles to this file, and also import other style files */
 
 .login {
   width: 400px;
