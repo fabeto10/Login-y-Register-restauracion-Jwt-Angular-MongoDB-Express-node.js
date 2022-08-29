@@ -1,87 +1,105 @@
 import { Component, OnInit } from '@angular/core';
-import sigma from 'sigma';
-import Graph from "graphology";
-import Sigma from "sigma";
-import ForceSupervisor from "graphology-layout-force/worker";
+import Graph from 'graphology';
+import Sigma from 'sigma';
+import ForceSupervisor from 'graphology-layout-force/worker';
 import { elementAt } from 'rxjs';
 import { ElementSchemaRegistry } from '@angular/compiler';
 
 @Component({
   selector: 'app-grafica',
   templateUrl: './grafica.component.html',
-  styleUrls: ['./grafica.component.css']
+  styleUrls: ['./grafica.component.css'],
 })
 export class GraficaComponent implements OnInit {
-
-  constructor() { }
-
+  graph: any = new Graph();
+  constructor() {}
+  graficarUsuario(usuario: any, x: number, y: number) {
+    console.log(usuario);
+    this.graph.addNode(usuario.id, {
+      x,
+      y,
+      label: usuario.nombre,
+      size: 10,
+      color: '#03fa45',
+    });
+    let yAux = y - 1;
+    usuario.hijos.forEach((hijo: any, index: number) => {
+      let xAux = index%2? x -1:x+1;
+      this.graficarUsuario(hijo, xAux, yAux);
+      this.graph.addEdge(usuario.id, hijo.id);
+    });
+  }
   ngOnInit(): void {
     // Retrieve the html document for sigma container
-  const container = document.getElementById("sigma-container") as HTMLElement;
-  let usuarios = [{
-    id: 1,
-    nombre: "Miguel Hernandez",
-    color: "#435376",
-  },{
-    id: 2,
-    nombre: "Maria Hernandez",
-    color: "#435776",
-  },{
-    id: 3,
-    nombre: "Daniel Hernandez",
-    color: "#435676",
-  },{
-    id: 4,
-    nombre: "Claudio Hernandez",
-    color: "#435176",
-  },{
-    id: 5,
-    nombre: "Rosa Hernandez",
-    color: "#435276",
-  }]
-    let relaciones = [{
-    origen:1,
-    destino: 2
-  },{
-    origen:2,
-    destino: 4
-  },{
-    origen:1,
-    destino: 3
-  },{
-    origen:2,
-    destino: 5
-  }]
-  console.log(usuarios)
-  const graph = new Graph();
-  const auxId = usuarios.forEach(function(element: any, index: number){
-    // console.log(element.id);
-    // let auxNew = element.id.sort()
-    // console.log(auxNew);
-    return graph.addNode(`${element.id}`, { x: --index, y: --index, size: 10, label: `${element.nombre}`,  color: `${element.color}` });
-  })
-  const auxEach = relaciones.forEach(function(element){
-    console.log(element.origen, element.destino)
-    return graph.addEdge(`${element.origen}`, `${element.destino}`, { size: 10} );
-  })
-  
-  auxId;
-  console.log(auxId);
-  auxEach;
-  console.log(auxEach);
-  // Create a sample graph
-  
-  // graph.addNode(1, { x: 20, y:100, label: "uno", size: 10, color: "#03fa45" });
-  // graph.addNode("n2", { x: 1, y: -1, label: "dos", size: 10, color: "#03fa45" });
-  // graph.addNode("n3", { x: -1, y: -0, label: "tres", size: 10, color: "#03fa45" });
-  // graph.addNode("n4", { x: -1, y: 0, label: "cuatro", size: 10, color: "#03fa45" });
-  // graph.addNode("n5", { x: 0, y: 0, label: "cinco", size: 10, color: "#03fa45" });
-  // graph.addEdge(1, "n2");
-  // graph.addEdge("n2", "n4");
-  // // graph.addEdge(1 , "n3");
-  // graph.addEdge("n2", "n5");
-  
-/*  graph.nodes().forEach((node, i) => {
+    const container = document.getElementById('sigma-container') as HTMLElement;
+    let usuario = {
+      id: 1,
+      nombre: 'Miguel Hernandez',
+      color: '#435376',
+      hijos: [
+        {
+          id: 2,
+          nombre: 'Maria Hernandez',
+          color: '#435776',
+          hijos: [
+            {
+              id: 4,
+              nombre: 'Hernan Dario',
+              color: '#435776',
+              hijos: [
+                {
+                  id: 7,
+                  nombre: 'German Dario',
+                  color: '#435776',
+                  hijos: [],
+                },
+                {
+                  id: 8,
+                  nombre: 'Miguel Estrada',
+                  color: '#435676',
+                  hijos: [],
+                },
+              ],
+            },
+            {
+              id: 5,
+              nombre: 'Daniel Estrada',
+              color: '#435676',
+              hijos: [],
+            },
+          ],
+        },
+        {
+          id: 3,
+          nombre: 'Daniel Hernandez',
+          color: '#435676',
+          hijos: [],
+        },
+      ],
+    };
+    // const auxId = usuarios.forEach(function(element: any, index: number){
+    //   // console.log(element.id);
+    //   // let auxNew = element.id.sort()
+    //   // console.log(auxNew)
+    //   return graph.addNode(`${element.id}`, { x: -3, y: 2, size: 10, label: `${element.nombre}`,  color: `${element.color}` })
+    // })
+    // const auxEach = relaciones.forEach(function(element){
+    //   console.log(element.origen, element.destino)
+    //   return graph.addEdge(`${element.origen}`, `${element.destino}`, { size: 10} );
+    // })
+
+    // auxId;
+    // console.log(auxId);
+    // auxEach;
+    // console.log(auxEach);
+    // Create a sample graph
+    this.graficarUsuario(usuario, 0, 0);
+    // graph.addEdge(1, "n2");
+    // graph.addEdge("n2", "n4");
+    // graph.addEdge(1 , "n3");
+    // graph.addEdge("n2", "n5");
+
+    /*  graph.nodes().forEach((node, i) => {
     const angle = (i * 1 * Math.PI) / graph.order;
     graph.setNodeAttribute(node, "x", 50 * Math.cos(angle));
     graph.setNodeAttribute(node, "y", 100 * Math.sin(angle));
@@ -91,7 +109,7 @@ export class GraficaComponent implements OnInit {
   // layout.start();
   
   // Create the sigma
-  const renderer:any = new Sigma(graph, container);
+  const renderer:any = new Sigma(this.graph, container);
   console.log(renderer)
   //
   // Drag'n'drop feature
@@ -120,8 +138,8 @@ export class GraficaComponent implements OnInit {
     // Get new position of node
     const pos = renderer.viewportToGraph(e);
   
-    graph.setNodeAttribute(draggedNode, "x", pos.x);
-    graph.setNodeAttribute(draggedNode, "y", pos.y);
+    this.graph.setNodeAttribute(draggedNode, "x", pos.x);
+    this.graph.setNodeAttribute(draggedNode, "y", pos.y);
   
     // Prevent sigma to move camera:
     e.preventSigmaDefault();
@@ -132,7 +150,7 @@ export class GraficaComponent implements OnInit {
   // On mouse up, we reset the autoscale and the dragging mode
   renderer.getMouseCaptor().on("mouseup", () => {
     if (draggedNode) {
-      graph.removeNodeAttribute(draggedNode, "highlighted");
+      this.graph.removeNodeAttribute(draggedNode, "highlighted");
     }
     isDragging = false;
     draggedNode = null;
@@ -184,7 +202,7 @@ export class GraficaComponent implements OnInit {
   });
 }
   }
+
 function size(origen: number, destino: number, size: any, arg3: number): void {
   throw new Error('Function not implemented.');
 }
-
