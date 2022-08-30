@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GraficaComponent } from './grafica/grafica.component';
-
 import { SigmaRoutingModule } from './sigma-routing.module';
+import { DialogAnimationsExample } from './dialog/dialog.component';
 
 
 @NgModule({
   declarations: [
-    GraficaComponent
+    GraficaComponent,
+    DialogAnimationsExample
   ],
   imports: [
     CommonModule,

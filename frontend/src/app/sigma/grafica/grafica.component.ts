@@ -184,7 +184,7 @@ export class GraficaComponent implements OnInit {
           .sort((a: any, b: any) => a.distance - b.distance)
           .slice(0, 1);
         let usuario = this.graph.getNodeAttribute(closestNodes[0].id, 'data');
-
+          console.log(usuario)
       }
     );
     // When clicking on the stage, we add a new node and connect it to the closest node
