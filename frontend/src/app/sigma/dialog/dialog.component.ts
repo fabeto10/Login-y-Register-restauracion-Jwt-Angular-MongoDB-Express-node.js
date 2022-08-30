@@ -5,9 +5,9 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
  * @title Dialog Animations
  */
 @Component({
-  selector: 'dialog',
-  styleUrls: ['dialog.component.css'],
-  templateUrl: 'dialog.component.html',
+  selector: 'app-dialog',
+  templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.css'],
 })
 export class DialogAnimationsExample {
   constructor(public dialog: MatDialog) {}
@@ -22,7 +22,7 @@ export class DialogAnimationsExample {
 }
 
 @Component({
-  selector: 'dialog',
+  selector: 'dialog-dialog',
   templateUrl: 'dialog.component.html',
 })
 export class DialogAnimationsExampleDialog {
