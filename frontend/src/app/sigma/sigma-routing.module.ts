@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GraficaComponent } from './grafica/grafica.component';
 
 const routes: Routes = [
-    {path: '', component: GraficaComponent},
+    {path: '', component: GraficaComponent}
 ];
 
 @NgModule({

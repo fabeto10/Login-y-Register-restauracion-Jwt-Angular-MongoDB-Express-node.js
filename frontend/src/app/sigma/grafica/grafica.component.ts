@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Graph from 'graphology';
 import Sigma from 'sigma';
-import ForceSupervisor from 'graphology-layout-force/worker';
-import { elementAt } from 'rxjs';
-import { ElementSchemaRegistry } from '@angular/compiler';
 
 @Component({
   selector: 'app-grafica',
