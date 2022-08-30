@@ -4,6 +4,8 @@ import Sigma from 'sigma';
 import ForceSupervisor from 'graphology-layout-force/worker';
 import { elementAt } from 'rxjs';
 import { ElementSchemaRegistry } from '@angular/compiler';
+import { DialogAnimationsExampleDialog } from '../dialog/dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-grafica',
@@ -12,7 +14,7 @@ import { ElementSchemaRegistry } from '@angular/compiler';
 })
 export class GraficaComponent implements OnInit {
   graph: any = new Graph();
-  constructor() {}
+  constructor(public dialog: MatDialog, public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {}
   graficarUsuario(usuario: any, x: number, y: number) {
     this.graph.addNode(usuario.id, {
       x,
@@ -184,7 +186,9 @@ export class GraficaComponent implements OnInit {
           .sort((a: any, b: any) => a.distance - b.distance)
           .slice(0, 1);
         let usuario = this.graph.getNodeAttribute(closestNodes[0].id, 'data');
-          console.log(usuario)
+        this.dialog.open(DialogAnimationsExampleDialog, {
+          width: '250px',
+        })
       }
     );
     // When clicking on the stage, we add a new node and connect it to the closest node
