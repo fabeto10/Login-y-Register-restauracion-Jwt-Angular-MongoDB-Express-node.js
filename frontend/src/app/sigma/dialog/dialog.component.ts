@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-
+import {Component, Output, EventEmitter, Input, Inject} from '@angular/core';
+import { NonNullableFormBuilder } from '@angular/forms';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { GraficaComponent } from '../grafica/grafica.component';
 /**
  * @title Dialog Animations
  */
@@ -10,21 +11,9 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
   styleUrls: ['./dialog.component.css'],
 })
 export class DialogAnimationsExample {
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog) {}
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(DialogAnimationsExampleDialog, {
-      width: '250px',
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
+
   }
-}
-
-@Component({
-  selector: 'dialog-dialog',
-  templateUrl: 'dialog.component.html',
-})
-export class DialogAnimationsExampleDialog {
-  constructor(public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {}
-}
